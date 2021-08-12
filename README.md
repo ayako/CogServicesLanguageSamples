@@ -4,6 +4,9 @@
 
 - [Text Analytics](https://azure.microsoft.com/ja-jp/services/cognitive-services/text-analytics/) は、自然言語処理を行って、文章中のキーワードやエンティティの抽出、センチメント分析、文章要約を行うエンジンをすぐに Web API で利用できます。
 
+![](doc_images/TextAnalyticsSummarizeSample.png)
+
+
 # サンプルの利用方法
 
 - Text Analytics : Summarize ([HTML/JavaScript](#htmljavascript))
@@ -24,4 +27,4 @@ var subscriptionKey = "YOUR_API_KEY";
 var endpoint = "https://YOUR_SERVICE_URL.cognitiveservices.azure.com/";
 ```
 
-TextAnalyticsSummarize.html を開き、文章を入力して動作を確認できます。
+[TextAnalyticsSummarize.html](samples/JavaScript/TextAnalyticsSummarize.html) を開き、文章を入力して動作を確認できます。
