@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Text Analytics Sample - Microsoft Azure Applied AI Services</title>
+    <link rel="stylesheet" href="css/site.css">
+    <script src="scripts/jquery-3.4.1.min.js"></script>
+    <script src="scripts/textanalytics_script.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Microsoft Cognitive Services | Applied AI Services</h1>
+        <h2>Text Analytics Sample</h2>
+        <!--テキストを入力-->
+            <textarea rows = "20" cols="120" id="TextData"></textarea><br/>
+            <input type="button" id="PostData" value="Analyze" />
+            <input type="button" id="GetResult" value="Result" />
+            <div id="ResultUrlDiv" hidden>resultUrl</div>
+    </div>
+    <table>
+        <tr>
+            <td class="OutputTh">
+                <!--出力結果-->
+                <div id="OutputDiv">要約したいテキストを入力して、[Analyze] をクリックしてください</div>
+            </td>                
+        </tr>
+    </table>
+</body>
+</html>
