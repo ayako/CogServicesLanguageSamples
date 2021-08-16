@@ -16,6 +16,8 @@
 Azure Portal から Text Analytics の エンドポイント(URL) と キー (Subscription Key) を取得しておきます。
 **Key1** に表示されている文字列が キー (Subscription Key) になります。
 
+<img src="doc_images/AzurePortal_TextAnalytics.png" width="600">
+
 ### HTML/JavaScript
 
 [textanalytics_script.js](samples/JavaScript/scripts/textanalytics_script.js)

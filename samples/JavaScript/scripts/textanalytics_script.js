@@ -14,7 +14,15 @@ $(function () {
     //文章の Post    
     var postData = function () {
 
-        var textData = document.getElementById('TextData').value;
+        //全角数字→半角に変換
+        // var textData = document.getElementById('TextData').value;
+        var textData = document.getElementById('TextData').value.toString()
+        .replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });;
+
+        var sentenceCount = document.getElementById('SentenceCount').value;
+
         var analysisData = {
             'displayName': 'tasks_20210811',
             'analysisInput': {
@@ -33,7 +41,7 @@ $(function () {
                             'model-version': 'latest',
                             'loggingOptOut': false,
                             'stringIndexType': 'TextElement_v8',
-                            'sentenceCount': 1,
+                            'sentenceCount': sentenceCount,
                             'sortBy': 'Offset'
                         }
                     }
@@ -92,7 +100,9 @@ $(function () {
             if (json.status == "succeeded")
             {
                 var outputText = "<h3>" + "結果:" + "</h3>";
-                outputText += json.tasks.extractiveSummarizationTasks[0].results.documents[0].sentences[0].text;
+                json.tasks.extractiveSummarizationTasks[0].results.documents[0].sentences.forEach(sentence => {
+                    outputText += sentence.text
+                });
                 outputDiv.html(outputText);                
             }
             else

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Text Analytics Sample - Microsoft Azure Applied AI Services</title>
+    <title>Text Analytics Sample - Microsoft Azure Cognitive Services | Applied AI Services</title>
     <link rel="stylesheet" href="css/site.css">
     <script src="scripts/jquery-3.4.1.min.js"></script>
     <script src="scripts/textanalytics_script.js"></script>
@@ -12,11 +12,12 @@
         <h1>Microsoft Cognitive Services | Applied AI Services</h1>
         <h2>Text Analytics Sample</h2>
         <!--テキストを入力-->
-            <textarea rows = "20" cols="120" id="TextData"></textarea><br/>
-            <input type="button" id="PostData" value="Analyze" />
-            <input type="button" id="GetResult" value="Result" />
-            <div id="ResultUrlDiv" hidden>resultUrl</div>
-    </div>
+        <textarea rows = "20" cols="120" id="TextData"></textarea><br/>
+        <label>要約の文章数</label><input type="number" id="SentenceCount" value="3" min="1" style="text-align:right;width:40px;" /><br />
+        <input type="button" id="PostData" value="Analyze" />
+        <input type="button" id="GetResult" value="Result" />
+        <div id="ResultUrlDiv" hidden>resultUrl</div>
+</div>
     <table>
         <tr>
             <td class="OutputTh">
