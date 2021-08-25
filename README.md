@@ -4,6 +4,10 @@
 
 - [Text Analytics](https://azure.microsoft.com/ja-jp/services/cognitive-services/text-analytics/) は、自然言語処理を行って、文章中のキーワードやエンティティの抽出、センチメント分析、文章要約を行うエンジンをすぐに Web API で利用できます。
 
+# サンプルの動作確認
+
+- [Text Analytics (Text Summarization)](https://coglangsamples.z11.web.core.windows.net/)
+
 ![](doc_images/TextAnalyticsSummarizeSample.png)
 
 

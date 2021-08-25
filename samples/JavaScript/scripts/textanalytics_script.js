@@ -21,6 +21,7 @@ $(function () {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
         });;
 
+        var language = document.getElementById('Language').value;
         var sentenceCount = document.getElementById('SentenceCount').value;
 
         var analysisData = {
@@ -30,7 +31,7 @@ $(function () {
                     {
                         'id': '001',
                         'text': textData,
-                        'language': 'ja'
+                        'language': language
                         }
                 ]
             },
