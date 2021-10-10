@@ -197,9 +197,9 @@ API リファレンスのページの中頃にリージョンごとの API コ�
 
 ### 2. Text Analytics を利用した VOC データ分析
 
-#### [Power Platform × M365 編] Power Automate & OneDrive for Business, Excel を用いて自動化する
+### [Power Platform × M365 編] Power Automate & OneDrive for Business, Excel を用いて自動化する
 
-##### データの準備
+#### データの準備
 
 VOC データ (CSV ファイル) を Excel で開きます。
 各行のデータに **id**, **text**, **language** の項目が入力されていることを確認します。
@@ -212,10 +212,285 @@ VOC データ (CSV ファイル) を Excel で開きます。
 <img src="doc_images/handson_textanalytics_22.png" width="600">
 
 テーブルに変換後、ツールバー > テーブルデザイン をクリックして、プロパティの欄で名前を **VOC_Table** に変更しておきます。
-VOC データを Excel 形式 (*.xlsx) として保存します。
 
 <img src="doc_images/handson_textanalytics_23.png" width="600">
 
-OneDrive for Business (M365) 配下に新規フォルダーを作成し (または既に作成済みのフォルダーを利用しても OK)、テーブル変換を行った VOC データ(Excel ファイル) をアップロードしておきます。
+分析結果を保存する列を用意します。**KeyPhrases** (キーフレーズ)、**Sentiment** (センチメント判定)、**Sentiment_Positive**、**Sentiment_Neutral**、**Sentiment_Negative** (センチメントの確度(数値)) という名前で列を追加しておきます。
 
 <img src="doc_images/handson_textanalytics_24.png" width="600">
+
+VOC データを Excel 形式 (*.xlsx) として保存します。
+
+<img src="doc_images/handson_textanalytics_25.png" width="600">
+
+OneDrive for Business (M365) 配下に新規フォルダーを作成し (または既に作成済みのフォルダーを利用しても OK)、テーブル変換を行った VOC データ(Excel ファイル) をアップロードしておきます。
+
+<img src="doc_images/handson_textanalytics_26.png" width="600">
+
+
+#### Power Automate フローの作成
+
+[Power Automate の トップページ](https://japan.flow.microsoft.com/ja-jp/) を開きます。
+左メニューバーから **＋作成** をクリックして、フローの新規作成を行います。
+
+<img src="doc_images/handson_textanalytics_31.png" width="600">
+
+今回は **インスタントクラウドフロー** をクリック、テンプレートを使用しないで作成します。
+
+<img src="doc_images/handson_textanalytics_32.png" width="600">
+
+*インスタントクラウドフローを作成する* ペインで [スキップ] をクリックして進みます。
+
+<img src="doc_images/handson_textanalytics_33.png" width="600">
+
+フロー作成画面上部の **無題** と書かれている欄をクリックし、フローの名前(ご自分で識別しやすいもの)をつけます。(ここでは **VOCAnalysis202110** と入力しています)
+トリガーの種類から **モバイルの Flow ボタン** をクリックします。
+
+<img src="doc_images/handson_textanalytics_34.png" width="600">
+
+*トリガー* から **手動でフローをトリガーをします** をクリックします。
+
+<img src="doc_images/handson_textanalytics_35.png" width="600">
+
+**[＋新しいステップ]** をクリックしてフローのステップを追加します。
+
+<img src="doc_images/handson_textanalytics_36.png" width="600">
+
+*コネクター* から **Excel Online (Business)** を選択します。
+
+<img src="doc_images/handson_textanalytics_37.png" width="600">
+
+*アクション* から **表内に存在する行を一覧表示** を選択します。
+
+<img src="doc_images/handson_textanalytics_38.png" width="600">
+
+*表内に存在する行を一覧表示* アクションで OneDrive にアップロードした VOC データ(Excel ファイル) を設定します。
+*場所* と *ドキュメントライブラリ* は **V** 記号をクリックして以下を選択します。
+
+- 場所: **OneDrive for Business**
+- ドキュメントライブラリ: **OneDrive**
+
+*ファイル* は ファイルアイコンをクリックして、OneDrive 配下のファイル > VOC ファイル (ここでは **VOCAnalysis** > **TweetAnalysis202110**) を選択します。
+
+<img src="doc_images/handson_textanalytics_39.png" width="600">
+
+*テーブル* は **V** 記号をクリックして **VOC_Table** を選択します。
+設定後、**[＋新しいステップ]** をクリックしてフローのステップを追加します。
+
+<img src="doc_images/handson_textanalytics_40.png" width="600">
+
+コネクターの検索欄に **テキスト** と入力して、表示される **テキスト分析** を選択します。
+
+<img src="doc_images/handson_textanalytics_41.png" width="600">
+
+テキスト分析の *アクション* から **キーフレーズ(V3.0)** を選択します。
+
+<img src="doc_images/handson_textanalytics_42.png" width="600">
+
+*キーフレーズ(V3.0)* のアクションに必要な項目を設定します。
+*document-id* の欄をクリックして、*動的なコンテンツ* から *表内に存在する行を一覧表示* で取得できる **id** を選択します。
+
+<img src="doc_images/handson_textanalytics_43.png" width="600">
+
+*表内に存在する行を一覧表示* で取得できるデータは複数行になるので、**Apply to each** コントロールが自動で追加されます。
+*キーフレーズ(V3.0)* のアクションをクリックして開きます。
+
+<img src="doc_images/handson_textanalytics_44.png" width="600">
+
+*document-text* の欄をクリックして、*動的なコンテンツ* から *表内に存在する行を一覧表示* で取得できる **text** を選択します。
+
+<img src="doc_images/handson_textanalytics_45.png" width="600">
+
+同様に、*document-language* には *動的なコンテンツ* > *表内に存在する行を一覧表示* > **language** を選択します。
+**アクションの追加** をクリックして、*キーフレーズ(V3.0)* に続くアクション (*Apply to each* 内) を追加します。
+
+<img src="doc_images/handson_textanalytics_46.png" width="600">
+
+再度、コネクターの検索欄に **テキスト** と入力して、表示される **テキスト分析** を選択します。
+
+<img src="doc_images/handson_textanalytics_47.png" width="600">
+
+テキスト分析の *アクション* から **センチメント(V3.0)** を選択します。
+
+<img src="doc_images/handson_textanalytics_48.png" width="600">
+
+*センチメント(V3.0)* のアクションに必要な項目を設定します。キーフレーズのアクションと同様に、動的なコンテンツから **id**、**text**、**language** を設定します。
+
+<img src="doc_images/handson_textanalytics_49.png" width="600">
+
+テキスト分析の結果を加工するための変数を作成します。
+*Apply to each* の上の 矢印 (↓) にマウスオーバーすると **(+)** が表示されるので、クリックして **アクションの追加** を選択します。
+
+<img src="doc_images/handson_textanalytics_51.png" width="600">
+
+コネクターの検索欄に **変数** と入力して、表示される **変数** を選択します。
+
+<img src="doc_images/handson_textanalytics_52.png" width="600">
+
+変数の *アクション* から **変数を初期化する** を選択します。
+
+<img src="doc_images/handson_textanalytics_53.png" width="600">
+
+*変数を初期化する* アクションの項目を設定します。
+
+- 名前: **KeyPhrases**
+- 種類: ドロップダウンリストから **文字列** を選択
+
+<img src="doc_images/handson_textanalytics_54.png" width="600">
+
+同様の手順でアクションを追加し、**変数** のコネクターから **変数を初期化する** を選択、以下のように設定します。
+
+- 名前: **Sentiment**
+- 種類: ドロップダウンリストから **文字列** を選択
+
+<img src="doc_images/handson_textanalytics_55.png" width="600">
+
+もう一度、同様の手順でアクションを追加し、**変数** のコネクターから **変数を初期化する** を選択、以下のように設定します。
+
+- 名前: **Sentiment_Score**
+- 種類: ドロップダウンリストから **アレイ** を選択
+
+<img src="doc_images/handson_textanalytics_56.png" width="600">
+
+> テキスト分析により Positive | Neutral | Negative それぞれの確度スコアが算出され、それらを一つの変数で扱えるようにアレイ(配列)として設定しています。
+
+テキスト分析(キーフレーズ、センチメント) の結果を、作成した変数に一旦格納します。
+*Apply to each* をクリックして開き、*キーフレーズ(V3.0)*、*センチメント(V3.0)* の下にある **アクションの追加** をクリックします。
+
+<img src="doc_images/handson_textanalytics_57.png" width="600">
+
+**変数** のコネクターを追加し、アクションから **変数を設定** を選択します。
+
+<img src="doc_images/handson_textanalytics_58.png" width="600">
+
+*変数の設定* アクションを以下のように設定し、キーフレーズを変数に格納します。
+
+- 名前: ドロップダウンリストから **KeyPhrases** を選択
+- 値: *動的なコンテンツ* から *キーフレーズ(V3.0)* 配下にある **keyPhrases** をクリックして選択
+
+<img src="doc_images/handson_textanalytics_59.png" width="600">
+
+自動で *Apply to each* が追加され、その中で KeyPhrases が設定されているのを確認してください。
+*Apply to each 2* の次となる **アクションの追加** をクリックします。
+
+<img src="doc_images/handson_textanalytics_60.png" width="600">
+
+同様に **変数** のコネクターを追加し、アクションから **変数を設定** を選択します。
+
+<img src="doc_images/handson_textanalytics_61.png" width="600">
+
+*変数の設定* アクションを以下のように設定し、センチメントを変数に格納します。
+
+- 名前: ドロップダウンリストから **Sentiment** を選択
+- 値: *動的なコンテンツ* から *センチメント(V3.0)* 配下にある **sentiment** をクリックして選択
+
+<img src="doc_images/handson_textanalytics_62.png" width="600">
+
+再度、 **変数** のコネクターを追加し、アクションから **変数を設定** を選択します。
+
+<img src="doc_images/handson_textanalytics_63.png" width="600">
+
+*変数の設定* アクションを以下のように設定し、センチメントのスコア (positive) を変数に格納します。
+
+- 名前: ドロップダウンリストから **Sentiment_Score** を選択
+- 値: *動的なコンテンツ* から *センチメント(V3.0)* 配下にある、一番最初の **positive** をクリックして選択
+
+<img src="doc_images/handson_textanalytics_64.png" width="600">
+
+同じ手順で、センチメントのスコア (neutral) を Sentiment_Score の配列に追加します。 
+
+<img src="doc_images/handson_textanalytics_65.png" width="600">
+<img src="doc_images/handson_textanalytics_66.png" width="600">
+
+同じ手順で、センチメントのスコア (negative) を Sentiment_Score の配列に追加します。 
+
+<img src="doc_images/handson_textanalytics_67.png" width="600">
+<img src="doc_images/handson_textanalytics_68.png" width="600">
+
+*キーフレーズ(V3.0)*、*センチメント(V3.0)*、および変数への格納に続く **アクションの追加** をクリックします。
+
+<img src="doc_images/handson_textanalytics_69.png" width="600">
+
+**Excel Online (Business)** のコネクターを追加し、アクションから **行の更新** を選択します。
+
+<img src="doc_images/handson_textanalytics_70.png" width="600">
+
+*行の更新* アクションを以下のように設定します。
+
+- 場所: **OneDrive for Business**
+- ドキュメントライブラリ: **OneDrive**
+- ファイル: VOC ファイル (ここでは **VOCAnalysis** > **TweetAnalysis202110**)
+- テーブル: **VOC_Table**
+- キー列: **id**
+- キー値: *動的なコンテンツ* から *表内に存在する行を一覧表示* 配下にある、**id** を選択
+- keyPhrases: *動的なコンテンツ* から *変数* 配下にある、**KeyPhrases** を選択
+- sentiment: *動的なコンテンツ* から *変数* 配下にある、**Sentiment** を選択
+
+<img src="doc_images/handson_textanalytics_71.png" width="600">
+
+センチメントのスコアは *Sentiment_Score* の配列から取り出すため、関数式を利用します。
+*sentiment_positive* の欄をクリックし、*動的なコンテンツ* で **式** をクリックして *コレクション* 配下にある **first(collection)** をクリックします。
+
+<img src="doc_images/handson_textanalytics_72.png" width="600">
+
+**first()** と入力された状態で **動的なコンテンツ** をクリックします。
+
+<img src="doc_images/handson_textanalytics_73.png" width="600">
+
+**Sentiment_Score** をクリックして *first()* の *()* の間に挿入します。
+
+<img src="doc_images/handson_textanalytics_74.png" width="600">
+
+**first(variables('Sentiment_Score'))** と表示されたら **[OK]** をクリックして挿入します。
+
+<img src="doc_images/handson_textanalytics_75.png" width="600">
+
+*sentiment_neutral* は *動的なコンテンツ* の **式** から **fist(collection)**、**skip()** の順にクリックし、**first(skip())** となるようにします。
+
+<img src="doc_images/handson_textanalytics_76.png" width="600">
+
+*skip()* の *()* の間に 動的なコンテンツから **Sentiment_Score** をクリックして挿入し、**first(skip(variables('Sentiment_Score'),1))** と表示されたら **[OK]** をクリックして設定します。
+
+<img src="doc_images/handson_textanalytics_77.png" width="600">
+
+*sentiment_negative* も同様に、動的コンテンツと式を利用して **first(skip(variables('Sentiment_Score'),2))** となるように設定します。
+
+<img src="doc_images/handson_textanalytics_78.png" width="600">
+
+これでフローの設定は完了です。右上メニューの **保存** をクリックしてフローを保存します。
+
+<img src="doc_images/handson_textanalytics_79.png" width="600">
+
+#### Power Automate フローのテスト
+
+右上メニューの **フローチェッカー** をクリックして、Power Automate のフローに構文エラーなどがないか確認します。
+
+<img src="doc_images/handson_textanalytics_81.png" width="600">
+
+フローにエラーや警告が該当する部分が検出されなければ OK です。フローチェッカー左上の**×**をクリックしてを閉じます。
+
+<img src="doc_images/handson_textanalytics_82.png" width="600">
+
+右上メニューの **テスト** をクリックして、フローをテスト実行に進みます。
+
+<img src="doc_images/handson_textanalytics_83.png" width="600">
+
+*フローのテスト* ペインで **手動** を選択、画面右下の **テスト** をクリックして次に進みます。
+
+<img src="doc_images/handson_textanalytics_84.png" width="600">
+
+*フローの実行* ペインが表示されたら、画面右下の **フローの実行** をクリックして、フローを実行します。
+
+<img src="doc_images/handson_textanalytics_85.png" width="600">
+
+*フローの実行が無事開始されました* と表示されたら、フローが開始されています。**完了** をクリックすると、実行のステータスを確認できます。
+
+<img src="doc_images/handson_textanalytics_86.png" width="600">
+
+中央のフロー画面に実行のステータスが表示されます。緑色の(✓) が表示されたアクションは問題なく実行されています。
+
+<img src="doc_images/handson_textanalytics_87.png" width="600">
+
+フローのすべてのアクションが問題なく実行されたら、VOC データファイル (Excel) を開いて、実行内容を確認します。KeyPhrase, Sentiment, Sentiment の各スコアが挿入されているのを確認してください。
+
+<img src="doc_images/handson_textanalytics_88.png" width="600">
