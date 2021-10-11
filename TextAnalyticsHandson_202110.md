@@ -14,8 +14,11 @@
     - 1.1 キーフレーズ抽出
     - 1.2 センチメント判定
     - 1.3 抽出要約
-2. Text Analytics を利用した VOC データ分析
+2. [Text Analytics を利用した VOC データ分析](#2-text-analytics-を利用した-voc-データ分析)
     - [Power Platform × M365 編] Power Automate & OneDrive for Business, Excel を用いて自動化する
+      - 2a.1 データの準備
+      - 2a.2 Power Automate による Text Analytics を利用した分析自動化
+      - 2.3 キーフレーズ、センチメントを視覚化する Power BI レポート作成
 
 
 ## 準備
@@ -199,7 +202,7 @@ API リファレンスのページの中頃にリージョンごとの API コ�
 
 ### [Power Platform × M365 編] Power Automate & OneDrive for Business, Excel を用いて自動化する
 
-#### データの準備
+#### 2a.1 データの準備
 
 VOC データ (CSV ファイル) を Excel で開きます。
 各行のデータに **id**, **text**, **language** の項目が入力されていることを確認します。
@@ -228,7 +231,9 @@ OneDrive for Business (M365) 配下に新規フォルダーを作成し (また�
 <img src="doc_images/handson_textanalytics_26.png" width="600">
 
 
-#### Power Automate フローの作成
+#### 2a.2 Power Automate による Text Analytics を利用した分析自動化
+
+##### Power Automate フローの作成
 
 [Power Automate の トップページ](https://japan.flow.microsoft.com/ja-jp/) を開きます。
 左メニューバーから **＋作成** をクリックして、フローの新規作成を行います。
@@ -461,7 +466,7 @@ OneDrive for Business (M365) 配下に新規フォルダーを作成し (また�
 
 <img src="doc_images/handson_textanalytics_79.png" width="600">
 
-#### Power Automate フローのテスト
+##### Power Automate フローのテスト
 
 右上メニューの **フローチェッカー** をクリックして、Power Automate のフローに構文エラーなどがないか確認します。
 
@@ -494,3 +499,68 @@ OneDrive for Business (M365) 配下に新規フォルダーを作成し (また�
 フローのすべてのアクションが問題なく実行されたら、VOC データファイル (Excel) を開いて、実行内容を確認します。KeyPhrase, Sentiment, Sentiment の各スコアが挿入されているのを確認してください。
 
 <img src="doc_images/handson_textanalytics_88.png" width="600">
+
+### 2.3 キーフレーズ、センチメントを視覚化する Power BI レポート作成
+
+Text Analytics で抽出したキーフレーズおよびセンチメントを Power BI レポートとして視覚化します。
+
+Power BI Desktop を起動し、*レポートにデータを追加する* 画面から **Excel からデータをインポートする** を選択します。 
+VOC データファイル(Excel) を OneDrive から直接、または一旦ローカルにダウンロードして読み込みます。
+
+<img src="doc_images/handson_textanalytics_91.png" width="600">
+
+*ナビデーター* ペインでデータが読み込まれているのを確認して **[読み込み]** をクリックします。
+
+<img src="doc_images/handson_textanalytics_92.png" width="600">
+
+Power BI レポート画面でビジュアルを追加していきます。
+*視覚化* パネルから *円グラフ* のアイコンをクリックして追加します。
+
+<img src="doc_images/handson_textanalytics_93.png" width="600">
+
+円グラフに *フィールド* パネルの *VOC_Table* から以下の要素を追加します。
+
+- 凡例: sentiment
+- 値: id
+
+<img src="doc_images/handson_textanalytics_94.png" width="600">
+
+> *値* に追加した **id** は自動で **id のカウント** として解釈されます。カウントにならない場合は、**id** をクリックして表示されるメニューから **カウント** を選択します。
+
+<img src="doc_images/handson_textanalytics_94-02.png" width="600">
+
+次にワードクラウドのビジュアルを追加します。
+*視覚化* パネルのアイコンの最後にある **…** をクリックして、**その他のビジュアルの取得** を選択します。
+
+<img src="doc_images/handson_textanalytics_95.png" width="600">
+
+*Power BI のビジュアル* ペインから **Word Cloud** をクリックして選択します。
+
+<img src="doc_images/handson_textanalytics_96.png" width="600">
+
+**[今すぐ入手する]** をクリックして追加します。
+
+<img src="doc_images/handson_textanalytics_97.png" width="600">
+
+*視覚化* パネルに追加された *ワードクラウド* アイコンをクリックしてレポートに追加します。
+
+<img src="doc_images/handson_textanalytics_98.png" width="600">
+
+ワードクラウドの *カテゴリー* に *VOC_Table* から **keyphrases** を追加すると、ワードクラウドに抽出したキーワードが表示されます。
+
+<img src="doc_images/handson_textanalytics_99.png" width="600">
+
+> ワードクラウドの設定で *テキストの回転* を **オフ** に設定すると、テキストの回転が一定になります。
+
+<img src="doc_images/handson_textanalytics_99-02.png" width="600">
+
+最後に **テーブル** ビジュアルを追加して、*VOC_Table* から *sentiment* *keyphrases* *text* などテーブル形式で閲覧したいデータを設定します。
+
+<img src="doc_images/handson_textanalytics_100.png" width="600">
+
+レポートに追加したビジュアルは連動して、データの絞り込み表示が可能です。
+円グラフ または ワードクラウド のワードをクリックすると、他のレポートのビジュアルが連動して、該当する列にデータが絞り込まれて表示されるのを確認してください。
+
+<img src="doc_images/handson_textanalytics_101.png" width="600">
+<img src="doc_images/handson_textanalytics_102.png" width="600">
+<img src="doc_images/handson_textanalytics_103.png" width="600">
