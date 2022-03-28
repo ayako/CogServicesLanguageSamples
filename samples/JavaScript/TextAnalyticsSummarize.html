@@ -6,22 +6,23 @@
     <link rel="stylesheet" href="css/site.css">
     <script src="scripts/jquery-3.4.1.min.js"></script>
     <script src="scripts/textanalytics_script.js"></script>
+    <script src="scripts/config.js"></script>
 </head>
 <body>
     <div>
         <h1>Microsoft Cognitive Services | Applied AI Services</h1>
         <h2>Text Analytics Sample - Extractive Summarization</h2>
         <!--テキストを入力-->
-        <textarea rows = "20" cols="120" id="TextData"></textarea><br/>
-        <select id="Language">
-            <option value="ja" selected>日本語</option>
-            <option value="en">English</option>
-        </select><br/>            
-        <label>要約の文章数</label><input type="number" id="SentenceCount" value="3" min="1" style="text-align:right;width:40px;" /><br />
-        <input type="button" id="PostData" value="Summarize" />
-        <input type="button" id="GetResult" value="Result" />
-        <div id="ResultUrlDiv" hidden>resultUrl</div>
-</div>
+            <textarea rows = "20" cols="120" id="TextData"></textarea><br/>
+            <select id="Language">
+                <option value="ja" selected>日本語</option>
+                <option value="en">English</option>
+            </select><br/>            
+            <label>要約の文章数</label><input type="number" id="SentenceCount" value="3" min="1" style="text-align:right;width:40px;" /><br />
+            <input type="button" id="PostData" value="Analyze" />
+            <input type="button" id="GetResult" value="Result" />
+            <div id="ResultUrlDiv" hidden>resultUrl</div>
+    </div>
     <table>
         <tr>
             <td class="OutputTh">

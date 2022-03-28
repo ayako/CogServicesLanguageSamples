@@ -19,13 +19,16 @@ $(function () {
         var textData = document.getElementById('TextData').value.toString()
         .replace(/[０-９．]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-        });;
+                        .replace(/[０-９．]/g, function(s) {
+                            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                        });;
 
         var language = document.getElementById('Language').value;
         var sentenceCount = document.getElementById('SentenceCount').value;
 
+        // Text Analytics に送信するデータにセット
         var analysisData = {
-            'displayName': 'tasks_20210811',
+            'displayName': 'tasks_20220325',
             'analysisInput': {
                 'documents': [
                     {
@@ -36,18 +39,48 @@ $(function () {
                 ]
             },
             'tasks': {
+                'entityRecognitionTasks': [
+                  {
+                    'parameters': {
+                      'model-version': 'latest',
+                      'loggingOptOut': false,
+                      'stringIndexType': 'TextElement_v8'
+                    },
+                    'taskName': 'string'
+                  }
+                ],
+                'keyPhraseExtractionTasks': [
+                  {
+                    'parameters': {
+                      'model-version': 'latest',
+                      'loggingOptOut': false
+                    },
+                    'taskName': 'string'
+                  }
+                ],
+                'sentimentAnalysisTasks': [
+                  {
+                    'parameters': {
+                      'model-version': 'latest',
+                      'loggingOptOut': false,
+                      'opinionMining': false,
+                      'stringIndexType': 'TextElement_v8'
+                    },
+                    'taskName': 'string'
+                  }
+                ],
                 'extractiveSummarizationTasks': [
-                    {
-                        'parameters': {
-                            'model-version': 'latest',
-                            'loggingOptOut': false,
-                            'stringIndexType': 'TextElement_v8',
-                            'sentenceCount': sentenceCount,
-                            'sortBy': 'Offset'
-                        }
+                  {
+                    'parameters': {
+                      'model-version': 'latest',
+                      'loggingOptOut': false,
+                      'stringIndexType': 'TextElement_v8',
+                      'sentenceCount': 3,
+                      'sortBy': 'Offset'
                     }
+                  }
                 ]
-            }
+              }
         };
     
         // Text Analytics にデータを Post
@@ -101,9 +134,35 @@ $(function () {
             if (json.status == "succeeded")
             {
                 var outputText = "<h3>" + "結果:" + "</h3>";
+                outputText += "<h4>" + "Extractive Summarization (文章要約):" + "</h4>";
                 json.tasks.extractiveSummarizationTasks[0].results.documents[0].sentences.forEach(sentence => {
                     outputText += sentence.text
                 });
+
+                outputText += "<h4>" + "Key Phrase Extraction (キーフレーズ抽出):" + "</h4>";
+                var keyPhrasesArray = json.tasks.keyPhraseExtractionTasks[0].results.documents[0].keyPhrases;
+                outputText += keyPhrasesArray;
+
+                outputText += "<h4>" + "Entity Recognition (エンティティ認識):" + "</h4>";
+                var entities = new Array();
+                json.tasks.entityRecognitionTasks[0].results.documents[0].entities.forEach(entity => {
+                    var entityWithCategory =
+                      entity.text + "(" 
+                      + entity.category
+                      + ((entity.subcategory != null)? ": " + entity.subcategory : "")                         
+                      + ")";
+                    entities.push(entityWithCategory);
+                });
+                outputText += entities.join(", ");
+
+                outputText += "<h4>" + "Sentiment (感情分析):" + "</h4>";
+                var sentiments = json.tasks.sentimentAnalysisTasks[0].results.documents[0];
+                outputText += "Overall Sentiment: <strong>" + sentiments.sentiment + "</strong><br/>";
+                outputText += "Sentiment Scores: "
+                                + "positive(" + sentiments.confidenceScores.positive + "), "
+                                + "neutral(" + sentiments.confidenceScores.neutral + "), "
+                                + "negative(" + sentiments.confidenceScores.negative + ")";
+
                 outputDiv.html(outputText);                
             }
             else
