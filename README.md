@@ -48,7 +48,7 @@ var endpoint = "https://YOUR_SERVICE_URL.cognitiveservices.azure.com/";
 
 ## Language Detection | Sentiment - Azure Functions (NodeJS/JavaSscript)
 
-[TextAnalyticsFunc202207](samples/JavaScript/Sentiment/TextAnalyticsFunc202207) フォルダーを Visual Studio Code などで開きます。
+[TextAnalyticsFunc202207](samples/JavaScript/Sentiment/TextAnalyticsFunc202207/) フォルダーを Visual Studio Code などで開きます。
 
 [index.js](samples/JavaScript/Sentiment/TextAnalyticsFunc202207/TextAnalyticsFunc/index.js)
 
@@ -59,7 +59,7 @@ const key = "YOUR_API_KEY";
 const endpoint = "https://YOUR_SERVICE_NAME.cognitiveservices.azure.com/"
 ```
 
-``npm start`` で起動します。
+`npm start` で起動します。
 
 
 以下の環境で構築、動作確認をしています;
@@ -69,5 +69,3 @@ const endpoint = "https://YOUR_SERVICE_NAME.cognitiveservices.azure.com/"
 - Visual Studio Code v1.69.2
   - [Azure Functions 拡張機能 & Azure Functions Core Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
   - [環境構築方法] (https://docs.microsoft.com/ja-jp/azure/azure-functions/create-first-function-vs-code-node)
-
-
