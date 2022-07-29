@@ -17,8 +17,6 @@ $(function () {
         //全角数字→半角に変換
         // var textData = document.getElementById('TextData').value;
         var textData = document.getElementById('TextData').value.toString()
-        .replace(/[０-９．]/g, function(s) {
-            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                         .replace(/[０-９．]/g, function(s) {
                             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                         });;

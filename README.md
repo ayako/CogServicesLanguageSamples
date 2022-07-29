@@ -6,25 +6,36 @@
 
 # サンプルの動作確認
 
-- [Text Analytics (Text Summarization)](https://coglangsamples.z11.web.core.windows.net/)
+- [Text Summarization](https://coglangsamples.z11.web.core.windows.net/)
 
 ![](doc_images/TextAnalyticsSummarizeSample.png)
 
 
 # サンプルの利用方法
 
-- Text Analytics : Summarize ([HTML/JavaScript](#htmljavascript))
+- Text Analytics : Summarize ([HTML(JavaScript)](#summarizehtmljavascript))
+- Cognitive Services for Language: Language Detection | Sentiment  ([Azure Functions (NodeJS/JavaScript)](#languagedetectionsentimentazurefunctionsnodejsjavascript))
 
-## Text Analytics
+## Cognitive Services の準備
+
+### Text Analytics を使う場合
 
 Azure Portal から Text Analytics の エンドポイント(URL) と キー (Subscription Key) を取得しておきます。
 **Key1** に表示されている文字列が キー (Subscription Key) になります。
 
 <img src="doc_images/AzurePortal_TextAnalytics.png" width="600">
 
-### HTML/JavaScript
+### Cognitive Services for Language を使う場合
 
-[textanalytics_script.js](samples/JavaScript/scripts/textanalytics_script.js)
+Azure Portal から Cognitive Services for Language の エンドポイント(URL) と キー (Subscription Key) を取得しておきます。
+**Key1** に表示されている文字列が キー (Subscription Key) になります。
+
+
+## Summarize - HTML (JavaScript)
+
+[textanalytics_script.js](samples/JavaScript/Summarize/scripts/textanalytics_script.js)
+
+以下の箇所を取得したエンドポイントおよびキーで書き換えます。
 
 ```textanalytics_script.js
 // Text Analytics の Subscription Key と URL をセット
@@ -33,4 +44,30 @@ var subscriptionKey = "YOUR_API_KEY";
 var endpoint = "https://YOUR_SERVICE_URL.cognitiveservices.azure.com/";
 ```
 
-[TextAnalyticsSummarize.html](samples/JavaScript/TextAnalyticsSummarize.html) を開き、文章を入力して動作を確認できます。
+[TextAnalyticsSummarize.html](samples/JavaScript/Summarize/TextAnalyticsSummarize.html) を開き、文章を入力して動作を確認できます。
+
+## Language Detection | Sentiment - Azure Functions (NodeJS/JavaSscript)
+
+[TextAnalyticsFunc202207](samples/JavaScript/Sentiment/TextAnalyticsFunc202207) フォルダーを Visual Studio Code などで開きます。
+
+[index.js](samples/JavaScript/Sentiment/TextAnalyticsFunc202207/TextAnalyticsFunc/index.js)
+
+以下の箇所を取得したエンドポイントおよびキーで書き換えます。
+
+```index.js
+const key = "YOUR_API_KEY";
+const endpoint = "https://YOUR_SERVICE_NAME.cognitiveservices.azure.com/"
+```
+
+``npm start`` で起動します。
+
+
+以下の環境で構築、動作確認をしています;
+
+- MacOS 12.5
+- NodeJS v16.16.0
+- Visual Studio Code v1.69.2
+  - [Azure Functions 拡張機能 & Azure Functions Core Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
+  - [環境構築方法] (https://docs.microsoft.com/ja-jp/azure/azure-functions/create-first-function-vs-code-node)
+
+
