@@ -7,6 +7,10 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "@azure/ai-text-analytics": "^5.1.0"
+    "@azure/ai-text-analytics": "^5.1.0",
+    "https": "^1.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "util": "^0.12.4"
   }
 }

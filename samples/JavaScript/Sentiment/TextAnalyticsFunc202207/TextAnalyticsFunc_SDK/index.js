@@ -1,4 +1,8 @@
+"use strict";
+
 const { TextAnalyticsClient, AzureKeyCredential } = require("@azure/ai-text-analytics");
+
+// use your Cognitive Services for Language key and endpoint
 const key = "YOUR_API_KEY";
 const endpoint = "https://YOUR_SERVICE_NAME.cognitiveservices.azure.com/";
 const textAnalyticsClient = new TextAnalyticsClient(endpoint, new AzureKeyCredential(key));
@@ -54,7 +58,7 @@ module.exports = async function (context, req) {
     ));
 
     context.res = {
-        // status: 200, /* Defaults to 200 */
+        status: 200, /* Defaults to 200 */
         body: responseBody
     };
 }
